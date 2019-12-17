@@ -11,6 +11,7 @@ from models.amenity import Amenity
 from models.place import Place
 from models.review import Review
 from shlex import split
+import uuid
 
 
 class HBNBCommand(cmd.Cmd):
@@ -43,6 +44,20 @@ class HBNBCommand(cmd.Cmd):
                 raise SyntaxError()
             my_list = line.split(" ")
             obj = eval("{}()".format(my_list[0]))
+            parameters = my_list[1:]
+            par_dict = {}
+            for i in parameters:
+                parsed = i.split("=")
+                if parsed[1][0] == '"':
+                    setattr(obj, parsed[0],
+                            str(parsed[1].replace('"', '').replace("_", " ")))
+                elif "." in parsed[1]:
+                    setattr(obj, parsed[0], float(parsed[1]))
+                else:
+                    try:
+                        setattr(obj, parsed[0], int(parsed[1]))
+                    except:
+                        continue
             obj.save()
             print("{}".format(obj.id))
         except SyntaxError:
