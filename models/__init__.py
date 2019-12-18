@@ -8,8 +8,11 @@ from models.city import City
 from models.amenity import Amenity
 from models.place import Place
 from models.review import Review
+import os
 
-if HBNB_TYPE_STORAGE == "db":
+type_storage = os.getenv('HBNB_TYPE_STORAGE')
+
+if type_storage == "db":
     storage = DBStorage()
     storage.reload()
 else:

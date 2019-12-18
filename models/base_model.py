@@ -30,8 +30,13 @@ class BaseModel:
                 if key != "__class__":
                     setattr(self, key, value)
         else:
-            self.id = Column(String(60), primary_key=True, nullable=False, unique=True)
-            self.created_at = self.updated_at = Column(DateTime, nullable=False, default=datetime.utcnow())
+            if models.type_storage == "db":
+                self.id = Column(String(60), primary_key=True, nullable=False, unique=True)
+                self.created_at = self.updated_at = Column(DateTime, nullable=False, default=datetime.utcnow())
+            else:
+                self.id = str(uuid.uuid4())
+                self.created_at = self.updated_at = datetime.now()
+                models.storage.new(self)
 
     def __str__(self):
         """returns a string

@@ -1,7 +1,9 @@
 #!/usr/bin/python3
 """This is the db storage class for AirBnB"""
 from os import getenv
-
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+import models
 
 class DBStorage:
     """This class serializes instances to a JSON file and
@@ -22,7 +24,7 @@ class DBStorage:
                                       getenv(HBNB_MYSQL_HOST),
                                       getenv(HBNB_MYSQL_DB)),
                                       pool_pre_ping=True)
-        #places = relationship("Place", cascade="all,delete", backref="user")
+        
 
     def all(self, cls=None):
         """Query a clase type """
