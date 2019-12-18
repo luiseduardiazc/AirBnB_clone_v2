@@ -70,7 +70,7 @@ class BaseModel:
         try:
             del my_dict["_sa_instance_state"]
         except:
-            continue
+            pass
         return my_dict
 
     def delete(self):

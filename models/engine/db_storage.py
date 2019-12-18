@@ -4,6 +4,7 @@ from os import getenv
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 import models
+from models.base_model import BaseModel, Base
 
 class DBStorage:
     """This class serializes instances to a JSON file and
@@ -24,6 +25,8 @@ class DBStorage:
                                       getenv(HBNB_MYSQL_HOST),
                                       getenv(HBNB_MYSQL_DB)),
                                       pool_pre_ping=True)
+        if getenv('HBNB_ENV') == "test":
+            Base.metadata.drop_all(self.__engine)
         
 
     def all(self, cls=None):
@@ -34,9 +37,12 @@ class DBStorage:
         ans = {}
         if cls is not None:
             for i in self.__session.query(cls).all():
-                ans["{}.{}".format(cls, obj_id)] = i
+                ans["{}.{}".format(type(i).__name__, i.id)] = i
         else:
-            pass
+            for i in self.__session.all():
+                ans["{}.{}".format(type(i).__name__, i.id)] = i
+            
+        return ans
 
     def new(self, obj):
         """add the object to the current database session """
@@ -55,4 +61,8 @@ class DBStorage:
             self.__session.delete(obj)
 
     def reload(self):
-        pass
+        """Reload"""
+        Base.metadata.create_all(engine)
+        session_factory = sessionmaker(bind=self.__engine, expire_on_commit=False)
+        Session = scoped_session(session_factory)
+        self.__session = Session()

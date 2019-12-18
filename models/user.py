@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """This is the user class"""
-from models.base_model import BaseModel
+from models.base_model import BaseModel, Base
+from sqlalchemy.orm import relationship
 
 
 class User(BaseModel):
@@ -15,4 +16,4 @@ class User(BaseModel):
     password = ""
     first_name = ""
     last_name = ""
-    places = relationship("Place", cascade="all,delete", backref="user")
+    #places = relationship("Place", cascade="all,delete", backref="user")
