@@ -2,9 +2,9 @@
 """This is the user class"""
 from models.base_model import BaseModel, Base
 from sqlalchemy.orm import relationship
+from sqlalchemy import Column, Integer, String, ForeignKey
 
-
-class User(BaseModel):
+class User(BaseModel, Base):
     """This is the class for user
     Attributes:
         email: email address
@@ -12,6 +12,9 @@ class User(BaseModel):
         first_name: first name
         last_name: last name
     """
+    __tablename__ = "users"
+    id =  Column(Integer, primary_key=True, autoincrement=True,
+                 nullable=False)
     email = ""
     password = ""
     first_name = ""
