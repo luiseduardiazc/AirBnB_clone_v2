@@ -36,13 +36,11 @@ class DBStorage:
                                       pool_pre_ping=True)
         if getenv('HBNB_ENV') == "test":
             Base.metadata.drop_all(self.__engine)
-        
 
     def all(self, cls=None):
         """Query a clase type """
 
         ans = {}
-
         if cls is None:
             for _class in  all_classes.values():
                 query = self.__session.query(_class).all()
@@ -72,6 +70,7 @@ class DBStorage:
     def reload(self):
         """Reload"""
         Base.metadata.create_all(self.__engine)
-        session_factory = sessionmaker(bind=self.__engine, expire_on_commit=False)
+        session_factory = sessionmaker(bind=self.__engine,
+                                       expire_on_commit=False)
         Session = scoped_session(session_factory)
         self.__session = Session()

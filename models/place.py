@@ -39,8 +39,9 @@ class Place(BaseModel, Base):
         price_by_night = Column(Integer, nullable=False, default=0)
         latitude = Column(Float, nullable=True)
         longitude = Column(Float, nullable=True)
-        amenities = relationship(
-            "Amenity", secondary=place_amenity, backref="place_amenities", viewonly=False)
+        amenities = relationship("Amenity", secondary=place_amenity,
+                                 backref="place_amenities",
+                                 viewonly=False)
     else:
         city_id = ""
         user_id = ""
@@ -68,4 +69,3 @@ class Place(BaseModel, Base):
             '''
             if obj is not None and type(obj).__name__ == 'Amenity':
                 self.amenity_ids.append(obj.id)
-
