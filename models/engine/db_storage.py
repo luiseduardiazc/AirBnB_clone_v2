@@ -12,8 +12,9 @@ from models.amenity import Amenity
 from models.place import Place
 from models.review import Review
 
-all_classes = {"User":User, "State":State, "City":City,
-                   "Amenity":Amenity, "Place":Place, "Review": Review}
+all_classes = {"User": User, "State": State, "City": City,
+               "Amenity": Amenity, "Place": Place, "Review": Review}
+
 
 class DBStorage:
     """This class serializes instances to a JSON file and
@@ -42,7 +43,7 @@ class DBStorage:
 
         ans = {}
         if cls is None:
-            for _class in  all_classes.values():
+            for _class in all_classes.values():
                 query = self.__session.query(_class).all()
                 for item in query:
                     ans["{}.{}".format(_class.__name__, item.id)] = item
@@ -53,7 +54,6 @@ class DBStorage:
 
     def new(self, obj):
         """add the object to the current database session """
-
         self.__session.add(obj)
 
     def save(self):

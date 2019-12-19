@@ -70,11 +70,11 @@ class BaseModel:
         my_dict["updated_at"] = my_dict["updated_at"].isoformat()
         try:
             del my_dict["_sa_instance_state"]
-        except:
+        except Exception as e:
             pass
         return my_dict
 
     def delete(self):
         """delete the current instance from the storage
         """
-        models.storage.delete()
+        models.storage.delete(self)
