@@ -12,6 +12,9 @@ from models.amenity import Amenity
 from models.place import Place
 from models.review import Review
 
+all_classes = {"User":User, "State":State, "City":City,
+                   "Amenity":Amenity, "Place":Place, "Review": Review}
+
 class DBStorage:
     """This class serializes instances to a JSON file and
     deserializes JSON file to instances
@@ -39,10 +42,12 @@ class DBStorage:
         """Query a clase type """
 
         ans = {}
-        print("------------{}-----------------".format(cls))
+
         if cls is None:
-            for i in self.__session.query(User, State, City, Place).all():
-                ans["{}.{}".format(type(i).__name__, i.id)] = i
+            for _class in  all_classes.values():
+                query = self.__session.query(_class).all()
+                for item in query:
+                    ans["{}.{}".format(_class.__name__, item.id)] = item
         else:
             for i in self.__session.query(cls).all():
                 ans["{}.{}".format(type(i).__name__, i.id)] = i
