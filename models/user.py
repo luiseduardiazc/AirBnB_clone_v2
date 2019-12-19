@@ -3,6 +3,7 @@
 from models.base_model import BaseModel, Base
 from sqlalchemy.orm import relationship
 from sqlalchemy import Column, Integer, String, ForeignKey
+import os
 
 class User(BaseModel, Base):
     """This is the class for user
@@ -13,8 +14,14 @@ class User(BaseModel, Base):
         last_name: last name
     """
     __tablename__ = "users"
-    email = ""
-    password = ""
-    first_name = ""
-    last_name = ""
-    #places = relationship("Place", cascade="all,delete", backref="user")
+    if os.getenv("HBNB_TYPE_STORAGE") == "db":
+        email = Column(String(128), nullable=False)
+        password = Column(String(128), nullable=False)
+        first_name = Column(String(128), nullable=False)
+        last_name = Column(String(128), nullable=False)
+        places = relationship("Place", cascade="all", backref="user")
+    else:
+        email = ""
+        password = ""
+        first_name = ""
+        last_name = ""
