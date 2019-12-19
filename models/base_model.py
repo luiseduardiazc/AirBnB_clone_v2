@@ -28,6 +28,8 @@ class BaseModel:
             updated_at: updated date
         """
         if kwargs:
+            if 'id' not in kwargs:
+                kwargs['id'] = str(uuid.uuid4())
             for key, value in kwargs.items():
                 if key == "created_at" or key == "updated_at":
                     value = datetime.strptime(value, "%Y-%m-%dT%H:%M:%S.%f")
@@ -70,8 +72,8 @@ class BaseModel:
         """
         my_dict = dict(self.__dict__)
         my_dict["__class__"] = str(type(self).__name__)
-        my_dict["created_at"] = self.created_at.isoformat()
-        my_dict["updated_at"] = self.updated_at.isoformat()
+        my_dict["created_at"] = my_dict["created_at"].isoformat()
+        my_dict["updated_at"] = my_dict["updated_at"].isoformat()
         try:
             del my_dict["_sa_instance_state"]
         except:
