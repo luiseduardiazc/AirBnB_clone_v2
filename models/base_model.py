@@ -3,12 +3,19 @@
 import uuid
 import models
 from datetime import datetime
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy import Column, Integer, String, DateTime
+
+Base = declarative_base()
 
 
 class BaseModel:
     """This class will defines all common attributes/methods
     for other classes
     """
+    id = Column(String(60), primary_key=True, nullable=False, unique=True)
+    created_at = Column(DateTime, nullable=False, default=datetime.utcnow())
+    updated_at = Column(DateTime, nullable=False, default=datetime.utcnow())
 
     def __init__(self, *args, **kwargs):
         """Instantiation of base model class
@@ -21,6 +28,8 @@ class BaseModel:
             updated_at: updated date
         """
         if kwargs:
+            if 'id' not in kwargs:
+                kwargs['id'] = str(uuid.uuid4())
             for key, value in kwargs.items():
                 if key == "created_at" or key == "updated_at":
                     value = datetime.strptime(value, "%Y-%m-%dT%H:%M:%S.%f")
@@ -29,7 +38,6 @@ class BaseModel:
         else:
             self.id = str(uuid.uuid4())
             self.created_at = self.updated_at = datetime.now()
-            models.storage.new(self)
 
     def __str__(self):
         """returns a string
@@ -48,6 +56,7 @@ class BaseModel:
         """updates the public instance attribute updated_at to current
         """
         self.updated_at = datetime.now()
+        models.storage.new(self)
         models.storage.save()
 
     def to_dict(self):
@@ -57,6 +66,15 @@ class BaseModel:
         """
         my_dict = dict(self.__dict__)
         my_dict["__class__"] = str(type(self).__name__)
-        my_dict["created_at"] = self.created_at.isoformat()
-        my_dict["updated_at"] = self.updated_at.isoformat()
+        my_dict["created_at"] = my_dict["created_at"].isoformat()
+        my_dict["updated_at"] = my_dict["updated_at"].isoformat()
+        try:
+            del my_dict["_sa_instance_state"]
+        except:
+            pass
         return my_dict
+
+    def delete(self):
+        """delete the current instance from the storage
+        """
+        models.storage.delete()

@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """This is the console for AirBnB"""
 import cmd
-from models import storage
+from models import storage, type_storage
 from datetime import datetime
 from models.base_model import BaseModel
 from models.user import User
@@ -42,9 +42,9 @@ class HBNBCommand(cmd.Cmd):
             if not line:
                 raise SyntaxError()
             my_list = line.split(" ")
-            obj = eval("{}()".format(my_list[0]))
+
             parameters = my_list[1:]
-            par_dict = {}
+            obj = eval("{}()".format(my_list[0]))
             for i in parameters:
                 parsed = i.split("=")
                 if parsed[1][0] == '"':
