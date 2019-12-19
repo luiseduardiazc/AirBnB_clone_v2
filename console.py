@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """This is the console for AirBnB"""
 import cmd
-from models import storage
+from models import storage, type_storage
 from datetime import datetime
 from models.base_model import BaseModel
 from models.user import User
@@ -42,21 +42,36 @@ class HBNBCommand(cmd.Cmd):
             if not line:
                 raise SyntaxError()
             my_list = line.split(" ")
-            obj = eval("{}()".format(my_list[0]))
+            
             parameters = my_list[1:]
-            par_dict = {}
-            for i in parameters:
-                parsed = i.split("=")
-                if parsed[1][0] == '"':
-                    setattr(obj, parsed[0],
-                            str(parsed[1].replace('"', '').replace("_", " ")))
-                elif "." in parsed[1]:
-                    setattr(obj, parsed[0], float(parsed[1]))
-                else:
-                    try:
-                        setattr(obj, parsed[0], int(parsed[1]))
-                    except:
-                        continue
+            if type_storage != "db":
+                obj = eval("{}()".format(my_list[0]))
+                for i in parameters:
+                    parsed = i.split("=")
+                    if parsed[1][0] == '"':
+                        setattr(obj, parsed[0],
+                                str(parsed[1].replace('"', '').replace("_", " ")))
+                    elif "." in parsed[1]:
+                        setattr(obj, parsed[0], float(parsed[1]))
+                    else:
+                        try:
+                            setattr(obj, parsed[0], int(parsed[1]))
+                        except:
+                            continue
+            else:
+                par_dict = {}
+                for i in parameters:
+                    parsed = i.split("=")
+                    if parsed[1][0] == '"':
+                        par_dict[parsed[0]] = str(parsed[1].replace('"', '').replace("_", " "))
+                    elif "." in parsed[1]:
+                        par_dict[parsed[0]] = float(parsed[1])
+                    else:
+                        try:
+                            par_dict[parsed[0]] = int(parsed[1])
+                        except:
+                            continue
+                obj = eval("{}(**par_dict)".format(my_list[0]))
             obj.save()
             print("{}".format(obj.id))
         except SyntaxError:
