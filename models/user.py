@@ -13,8 +13,6 @@ class User(BaseModel, Base):
         last_name: last name
     """
     __tablename__ = "users"
-    id =  Column(Integer, primary_key=True, autoincrement=True,
-                 nullable=False)
     email = ""
     password = ""
     first_name = ""

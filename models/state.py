@@ -11,7 +11,5 @@ class State(BaseModel, Base):
         name: input name
     """
     __tablename__ = "states"
-    id =  Column(Integer, primary_key=True, autoincrement=True,
-                 nullable=False)
     name = Column(String(128), nullable=False)
     #cities = relationship("City", cascade="all,delete", backref="state")

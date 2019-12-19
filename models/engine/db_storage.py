@@ -5,6 +5,12 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
 import models
 from models.base_model import BaseModel, Base
+from models.user import User
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.place import Place
+from models.review import Review
 
 class DBStorage:
     """This class serializes instances to a JSON file and
@@ -32,16 +38,14 @@ class DBStorage:
     def all(self, cls=None):
         """Query a clase type """
 
-        Session = sessionmaker(bind=engine)
-        self.__session = Session()
         ans = {}
-        if cls is not None:
-            for i in self.__session.query(cls).all():
+        print("------------{}-----------------".format(cls))
+        if cls is None:
+            for i in self.__session.query(User, State, City, Place).all():
                 ans["{}.{}".format(type(i).__name__, i.id)] = i
         else:
-            for i in self.__session.all():
+            for i in self.__session.query(cls).all():
                 ans["{}.{}".format(type(i).__name__, i.id)] = i
-            
         return ans
 
     def new(self, obj):

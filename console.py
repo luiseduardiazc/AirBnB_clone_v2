@@ -44,34 +44,19 @@ class HBNBCommand(cmd.Cmd):
             my_list = line.split(" ")
             
             parameters = my_list[1:]
-            if type_storage != "db":
-                obj = eval("{}()".format(my_list[0]))
-                for i in parameters:
-                    parsed = i.split("=")
-                    if parsed[1][0] == '"':
-                        setattr(obj, parsed[0],
-                                str(parsed[1].replace('"', '').replace("_", " ")))
-                    elif "." in parsed[1]:
-                        setattr(obj, parsed[0], float(parsed[1]))
-                    else:
-                        try:
-                            setattr(obj, parsed[0], int(parsed[1]))
-                        except:
-                            continue
-            else:
-                par_dict = {}
-                for i in parameters:
-                    parsed = i.split("=")
-                    if parsed[1][0] == '"':
-                        par_dict[parsed[0]] = str(parsed[1].replace('"', '').replace("_", " "))
-                    elif "." in parsed[1]:
-                        par_dict[parsed[0]] = float(parsed[1])
-                    else:
-                        try:
-                            par_dict[parsed[0]] = int(parsed[1])
-                        except:
-                            continue
-                obj = eval("{}(**par_dict)".format(my_list[0]))
+            obj = eval("{}()".format(my_list[0]))
+            for i in parameters:
+                parsed = i.split("=")
+                if parsed[1][0] == '"':
+                    setattr(obj, parsed[0],
+                            str(parsed[1].replace('"', '').replace("_", " ")))
+                elif "." in parsed[1]:
+                    setattr(obj, parsed[0], float(parsed[1]))
+                else:
+                    try:
+                        setattr(obj, parsed[0], int(parsed[1]))
+                    except:
+                        continue
             obj.save()
             print("{}".format(obj.id))
         except SyntaxError:
@@ -147,7 +132,7 @@ class HBNBCommand(cmd.Cmd):
         Exceptions:
             NameError: when there is no object taht has the name
         """
-        objects = storage.all()
+        storage.all()
         my_list = []
         if not line:
             for key in objects:
