@@ -12,6 +12,7 @@ from models.amenity import Amenity
 from models.place import Place
 from models.review import Review
 
+
 class DBStorage:
     """This class serializes instances to a JSON file and
     deserializes JSON file to instances
@@ -33,15 +34,16 @@ class DBStorage:
                                       pool_pre_ping=True)
         if getenv('HBNB_ENV') == "test":
             Base.metadata.drop_all(self.__engine)
-        
 
     def all(self, cls=None):
         """Query a clase type """
 
         ans = {}
-        print("------------{}-----------------".format(cls))
         if cls is None:
-            for i in self.__session.query(User, State, City, Place).all():
+            for i in self.__session.query(User,
+                                          State, City, Place,
+                                          Amenity, Review).all():
+                print("object:   {}".format(i))
                 ans["{}.{}".format(type(i).__name__, i.id)] = i
         else:
             for i in self.__session.query(cls).all():
@@ -67,6 +69,7 @@ class DBStorage:
     def reload(self):
         """Reload"""
         Base.metadata.create_all(self.__engine)
-        session_factory = sessionmaker(bind=self.__engine, expire_on_commit=False)
+        session_factory = sessionmaker(bind=self.__engine,
+                                       expire_on_commit=False)
         Session = scoped_session(session_factory)
         self.__session = Session()

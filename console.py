@@ -42,7 +42,7 @@ class HBNBCommand(cmd.Cmd):
             if not line:
                 raise SyntaxError()
             my_list = line.split(" ")
-            
+
             parameters = my_list[1:]
             obj = eval("{}()".format(my_list[0]))
             for i in parameters:
@@ -132,7 +132,7 @@ class HBNBCommand(cmd.Cmd):
         Exceptions:
             NameError: when there is no object taht has the name
         """
-        storage.all()
+        objects = storage.all()
         my_list = []
         if not line:
             for key in objects:

@@ -38,12 +38,6 @@ class BaseModel:
         else:
             self.id = str(uuid.uuid4())
             self.created_at = self.updated_at = datetime.now()
-            #models.storage.new(self)
-
-        #if models.type_storage == "db":
-        #    self.id = Column(String(60), primary_key=True, nullable=False, unique=True)
-        #    self.created_at = self.updated_at = Column(DateTime, nullable=False, default=datetime.utcnow())
-
 
     def __str__(self):
         """returns a string
