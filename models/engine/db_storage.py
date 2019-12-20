@@ -59,7 +59,10 @@ class DBStorage:
         return ans
 
     def new(self, obj):
-        """add the object to the current database session """
+        """add the object to the current database session 
+        Args:
+            obj: given object
+        """
         self.__session.add(obj)
 
     def save(self):
