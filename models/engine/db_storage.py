@@ -27,7 +27,10 @@ class DBStorage:
     __session = None
 
     def __init__(self):
-        """ Init method """
+        """ Init method 
+    Attributes:
+        __engine: engine for SQLAlchemy
+        __session: session to work"""
 
         self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'.format(
                                       getenv("HBNB_MYSQL_USER"),
