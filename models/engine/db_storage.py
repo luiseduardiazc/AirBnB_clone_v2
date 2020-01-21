@@ -27,7 +27,7 @@ class DBStorage:
     __session = None
 
     def __init__(self):
-        """ Init method 
+        """ Init method
     Attributes:
         __engine: engine for SQLAlchemy
         __session: session to work"""
@@ -59,7 +59,7 @@ class DBStorage:
         return ans
 
     def new(self, obj):
-        """add the object to the current database session 
+        """add the object to the current database session
         Args:
             obj: given object
         """
