@@ -28,6 +28,7 @@ class BaseModel:
             updated_at: updated date
         """
         if kwargs:
+            self.created_at = self.updated_at = datetime.now()
             if 'id' not in kwargs:
                 kwargs['id'] = str(uuid.uuid4())
             for key, value in kwargs.items():

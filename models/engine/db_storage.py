@@ -54,7 +54,7 @@ class DBStorage:
                 for item in query:
                     ans["{}.{}".format(_class.__name__, item.id)] = item
         else:
-            for i in self.__session.query(cls).all():
+            for i in self.__session.query(eval(cls)).all():
                 ans["{}.{}".format(type(i).__name__, i.id)] = i
         return ans
 
@@ -83,3 +83,9 @@ class DBStorage:
                                        expire_on_commit=False)
         Session = scoped_session(session_factory)
         self.__session = Session()
+
+    def close(self):
+        '''
+        close session
+        '''
+        self.__session.close()
