@@ -5,6 +5,7 @@ module states
 from flask import Flask
 from flask import render_template
 from models import storage
+from models.state import State
 
 app = Flask(__name__)
 
@@ -12,12 +13,15 @@ app = Flask(__name__)
 @app.route('/states_list', strict_slashes=False)
 def states_list():
     ''' states list '''
-    states = storage.all("State")
-    return render_template('7-states_list.html', dict_states=states)
+    states_dict = storage.all(State)
+    states = []
+    for k, v in states_dict.items():
+        states.append(v)
+    return render_template('7-states_list.html', states=states)
 
 
 @app.teardown_appcontext
-def teardown_db(exec):
+def teardown_db(self):
     ''' teardown_db '''
     storage.close()
 
