@@ -17,7 +17,8 @@ def states_list():
     states = []
     for k, v in states_dict.items():
         states.append(v)
-    return render_template('8-cities_by_states.py', states=states)
+    print(states)
+    return render_template('8-cities_by_states.html', states=states)
 
 
 @app.teardown_appcontext
