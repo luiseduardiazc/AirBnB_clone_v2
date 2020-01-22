@@ -54,7 +54,7 @@ class DBStorage:
                 for item in query:
                     ans["{}.{}".format(_class.__name__, item.id)] = item
         else:
-            for i in self.__session.query(eval(cls)).all():
+            for i in self.__session.query(cls).all():
                 ans["{}.{}".format(type(i).__name__, i.id)] = i
         return ans
 
