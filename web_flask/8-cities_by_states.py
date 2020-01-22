@@ -17,7 +17,6 @@ def states_list():
     states = []
     for k, v in states_dict.items():
         states.append(v)
-    print(states)
     return render_template('8-cities_by_states.py', states=states)
 
 
