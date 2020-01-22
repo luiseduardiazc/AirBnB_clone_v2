@@ -13,7 +13,7 @@ app = Flask(__name__)
 @app.route('/states_list', strict_slashes=False)
 def states_list():
     ''' states list '''
-    states_dict = storage.all(State)
+    states_dict = storage.all("State")
     states = []
     for k, v in states_dict.items():
         states.append(v)
